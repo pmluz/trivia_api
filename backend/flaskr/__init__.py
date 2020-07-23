@@ -194,7 +194,7 @@ def create_app(test_config=None):
                 'question': question
             })
 
-        except SyntaxError:
+        except Exception:
             abort(400)
 
     # Error Handlers
