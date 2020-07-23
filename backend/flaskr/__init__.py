@@ -37,8 +37,8 @@ def create_app(test_config=None):
     @app.route('/categories', methods=['GET'])
     def get_categories():
         categories = {}
-        for c in Category.query.all():
-            categories[c.id] = c.type
+        for category in Category.query.all():
+            categories[category.id] = category.type
         # print('Categories:', categories)  # test to check
 
         return jsonify({'success': True, 'categories': categories})
@@ -50,9 +50,8 @@ def create_app(test_config=None):
             current_questions = paginate_questions(request, selection)
 
             categories = {}
-            for c in Category.query.all():
-                categories[c.id] = c.type
-            # print('Categories:', categories) # test to check
+            for category in Category.query.all():
+                categories[category.id] = category.type
 
             if len(selection) == 0:
                 abort(404)
@@ -64,7 +63,7 @@ def create_app(test_config=None):
                 'categories': categories
             })
 
-        except:
+        except Exception:
             abort(404)
 
     @app.route('/questions/<int:id>', methods=['DELETE'])
@@ -87,7 +86,7 @@ def create_app(test_config=None):
                 'total_questions': len(selection)
             })
 
-        except:
+        except ValueError:
             abort(422)
 
     @app.route('/questions', methods=['POST'])
@@ -114,7 +113,7 @@ def create_app(test_config=None):
                 'created': question.id,
                 'total_questions': len(selection)
             })
-        except:
+        except ValueError:
             abort(422)
 
     @app.route('/questions/search', methods=['POST'])
@@ -135,7 +134,7 @@ def create_app(test_config=None):
                 'questions': search_results,
                 'total_questions': len(search_query)
             })
-        except:
+        except Exception:
             abort(404)
 
     @app.route('/categories/<int:id>/questions', methods=['GET'])
@@ -156,7 +155,7 @@ def create_app(test_config=None):
                 'current_category': str(category.type)
             })
 
-        except:
+        except ValueError:
             abort(422)
 
     @app.route('/quizzes', methods=['POST'])
@@ -195,7 +194,7 @@ def create_app(test_config=None):
                 'question': question
             })
 
-        except:
+        except SyntaxError:
             abort(400)
 
     # Error Handlers
